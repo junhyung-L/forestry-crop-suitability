@@ -1,5 +1,9 @@
-pandas>=2.0.0
-numpy>=1.24.0
-scikit-learn>=1.2.0
-scipy>=1.10.0
-matplotlib>=3.7.0
+# Versions recorded in notebook pip output (Anaconda, Python 3.12.4):
+# pandas/numpy/scipy from notebooks/final_modeling.ipynb and the GIS notebooks; matplotlib from
+# notebooks/final_modeling.ipynb (a second machine in the same project).
+pandas==2.2.2
+numpy==1.26.4
+scipy==1.13.1
+matplotlib==3.8.0
+# scikit-learn: pinned to the environment used for the 2026-11 review; original run versions were not recorded.
+scikit-learn==1.6.1

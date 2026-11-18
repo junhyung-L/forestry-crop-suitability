@@ -88,6 +88,8 @@ python run_pipeline.py `
 
 헤더가 다르면 `--crop`, `--features`로 지정합니다. 기본 `--encoding`은 `cp949`이고, 실패하면 UTF-8을 시도합니다. 실행하면 `results/`에 `<crop>_chi_square.csv`, `<crop>_anova.csv`, `<crop>_spearman.csv`, `<crop>_summary.json`이 저장됩니다.
 
+노트북은 Python 3.12.4(Anaconda)에서 실행했습니다. `requirements.txt`는 pandas·numpy·scipy·matplotlib을 노트북 pip 출력에 기록된 버전으로 고정했고, 기록이 없는 scikit-learn은 2026-11 점검 환경 버전으로 고정했습니다.
+
 ## 저장소 구조
 
 ```text

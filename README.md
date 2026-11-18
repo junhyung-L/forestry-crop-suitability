@@ -114,6 +114,10 @@ Pass other headers through `--crop` and `--features`; `--encoding` defaults to
 `cp949`, then tries UTF-8. Writes `<crop>_chi_square.csv`, `<crop>_anova.csv`,
 `<crop>_spearman.csv`, and `<crop>_summary.json` to `results/`.
 
+The notebooks ran on Python 3.12.4 (Anaconda). `requirements.txt` pins pandas,
+numpy, scipy, and matplotlib to the versions their pip output records;
+scikit-learn was not recorded and is pinned to the 2026-11 review environment.
+
 ## Repository layout
 
 ```text
