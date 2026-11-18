@@ -75,6 +75,10 @@ Cost: a sanity check, not validation.
 | Blackberry | Random forest | 0.84 | 4 |
 
 The comparison point is the chance diagonal (AUC 0.5) on each ROC figure.
+The repository CLI re-implements only the screening statistics (chi-square,
+ANOVA, Spearman), a random-forest production regression, and a linear-SVM
+classifier; the per-crop model choices and AUCs above come from the
+competition-era analysis (ROC figures in `images/`), whose CSV is not included.
 
 ## Limitations
 

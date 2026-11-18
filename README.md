@@ -3,19 +3,23 @@
 [한국어](README.ko.md) · [Case study](PORTFOLIO.md)
 
 Suitability analysis and a map-based service concept for seven short-cycle
-non-timber forest crops (such as chestnut, yam, and blackberry), built by
-linking soil, climate, and production data, including GIS soil and
-soil-moisture shapefiles processed with GeoPandas.
+non-timber forest crops, linking soil, climate, and production data (GIS soil
+and soil-moisture shapefiles processed with GeoPandas).
 
 **Problem.** New forest farmers must pick a crop and a site first, but soil,
 climate, and production data sit in separate public sources. Which conditions
 go with above-average production for each crop, and which regions match them?
 
-**Result.** For classifying above-mean production, test AUC was 0.94 for
-chestnut, 0.91 for yam, and 0.84 for blackberry, against 0.5 for chance, on
-test sets of about 2 to 5 positive cases. No single model fit every crop:
-logistic regression was chosen for chestnut, SVM for yam, and random forest
-for blackberry.
+**Result.** Test AUC for above-mean production: 0.94 for chestnut, 0.91 for
+yam, and 0.84 for blackberry (chance 0.5). No single model fit every crop:
+logistic regression for chestnut, SVM for yam, random forest for blackberry.
+
+**Scope.** Test sets held about 2 to 5 positive cases, so model differences are
+within AUC noise. The CLI (`python run_pipeline.py`) re-implements only the
+screening statistics, a random-forest regression, and a linear-SVM
+classifier; the per-crop
+model choices and AUCs above come from the competition-era analysis (ROC
+figures in `images/`), whose CSV is not included.
 
 **Recognition.** Grand Prize (Korea Forest Service Commissioner Award, first
 place), 2024 Forestry Statistics Smart Use Competition, Korea Forest Service

@@ -48,7 +48,7 @@
 | 마 | SVM | 0.91 | 2 |
 | 복분자딸기 | Random Forest | 0.84 | 4 |
 
-비교 기준은 각 ROC 그림의 무작위 대각선(AUC 0.5)이다.
+비교 기준은 각 ROC 그림의 무작위 대각선(AUC 0.5)이다. 이 저장소의 CLI는 선별용 통계(Chi-square·ANOVA·Spearman), Random Forest 생산량 회귀, 선형 SVM 분류만 재구현한다. 위의 작물별 모델 선택과 AUC는 대회 당시 분석 결과(ROC 그림은 `images/`)이며, 분석용 CSV는 포함되어 있지 않다.
 
 ## 한계
 
