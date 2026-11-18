@@ -1,31 +1,47 @@
 # Forestry Crop Suitability and Yield Analysis
 
-[한국어](README.ko.md)
+[한국어](README.ko.md) · [Case study](PORTFOLIO.md)
 
-> [Project details](PORTFOLIO.md)
+This project links soil, climate, and production data for seven short-rotation
+forest crops (such as chestnut, yam, and blackberry) to suggest where each crop
+is likely to do well, and presents the result as a map-based recommendation
+concept.
 
-An exploratory decision-support workflow for relating forestry crop production
-to soil and climate variables. The maintained Python entry point runs
-statistical association checks, random-forest yield regression, and a linear
-SVM suitability classifier from a CSV supplied at runtime.
+**Decision question.** A prospective forester has to choose a crop and a site
+first. Which soil and climate conditions go with above-average production for
+each crop, and which regions match them?
+
+**Headline finding.** No single model fit every crop. After statistical
+screening, the final report chose SVM for yam, random forest for blackberry,
+fresh shiitake, deodeok, and acanthopanax, and logistic regression for chestnut
+and balloon flower. The retained ROC figures show AUC 0.94 for chestnut, 0.91
+for yam, and 0.84 for blackberry when classifying above-mean production. Each
+test set was very small: the curves move in true-positive-rate steps of 0.2 to
+0.5, which means roughly 2 to 5 positive cases. Read these AUCs as noisy
+historical results, not benchmarks.
+
+**Recognition.** Grand Prize (Korea Forest Service Commissioner Award, first
+place), 2024 Forestry Statistics Smart Use Competition, Korea Forest Service
+and Korea Forestry Promotion Institute (13 Dec 2024). Team entry; this
+repository does not record the per-person split of work.
 
 > **Evidence boundary:** the raw analysis CSV is not included. The repository
 > contains source links, notebooks, code, report PDFs, and retained figures,
-> but cannot reproduce the historical scores below without the original input
+> but it cannot reproduce the historical scores without the original input
 > data and its column headers.
 
 ## Problem
 
-The workflow investigates soil/climate associations with positive production,
-predicts positive production, and classifies observations at or above mean
-production for a selected crop column.
+The workflow screens soil and climate variables against positive production,
+predicts production for positive-yield rows, and classifies observations as
+suitable when production is at or above the crop mean.
 
 ## Data boundary
 
 `data/임업통계 데이터 셋 출처(이준형).txt` lists forestry-statistics, soil,
 climate, and production-data sources. It does not contain the analysis CSV, so
-row count, time coverage, geographic unit, target definition, and train/test
-provenance are **UNKNOWN**.
+the row count, time coverage, geographic unit, target definition, and original
+train/test split cannot be checked from this repository.
 
 `src/data_loader.DataLoader` expects either the historical Korean headers it
 maps or already-English names such as `chestnut_kg`, `avg_temp`, `humidity`,
@@ -89,22 +105,34 @@ exploration only and does not establish that changing a variable changes yield.*
 
 ![Retained chestnut ROC curve](images/roc_chestnut.png)
 
-*Figure 5. The checked-in chestnut ROC image is labeled AUC 0.94. Its raw split,
-sample size, and exact generation configuration are unavailable, so it is a
-historical project artifact rather than a current reproducibility benchmark.*
+*Figure 5. The checked-in chestnut ROC image is labeled AUC 0.94. The curve
+rises in steps of 0.2, so the test set held about five positive cases. The raw
+split and exact configuration are unavailable, so it is a historical project
+artifact rather than a current reproducibility benchmark.*
 
 ## Historical results retained in the repository
 
-| Crop | Retained ROC-image label | Evidence and interpretation |
-|---|---:|---|
-| Chestnut | 0.94 | `images/roc_chestnut.png`; historical artifact, not rerun |
-| Yam | 0.91 | `images/roc_yam.png`; historical artifact, not rerun |
-| Blackberry | 0.84 | `images/roc_blackberry.png`; historical artifact, not rerun |
+| Crop | Model chosen in the report | Retained ROC-image AUC | Approx. positives in test set | Evidence |
+|---|---|---:|---:|---|
+| Chestnut | Logistic regression | 0.94 | 5 | `images/roc_chestnut.png`; not rerun |
+| Yam | SVM | 0.91 | 2 | `images/roc_yam.png`; not rerun |
+| Blackberry | Random forest | 0.84 | 4 | `images/roc_blackberry.png`; not rerun |
 
-The former README described additional model choices and a competition award.
-The raw data, split definitions, model files, external leaderboard, and award
-record are not tracked here, so those claims are not presented as reproducible
-outcomes.
+The positive counts are read from the step size of each ROC curve, not from a
+saved split. Each image's title names only the crop, not the model that drew it. The comparison point is the chance diagonal (AUC 0.5) drawn on
+each figure; the report does not record a majority-class or single-variable
+baseline. The report's model choice for each crop (SVM, random forest, or
+logistic regression) comes from its own AUC comparison, which is not retained
+as a table.
+
+How the report screened variables before modelling:
+
+- Soil variables (categorical): chi-square and ANOVA, keeping variables with
+  p < 0.1.
+- Climate variables: correlation with production, keeping |r| >= 0.2.
+- Domain check: top variables were compared with cultivation guidance. For
+  example, the leading soil variable for chestnut was the loam texture code,
+  which matches standard chestnut growing advice.
 
 ## Run
 
@@ -146,6 +174,10 @@ data/                  # Source notes; raw analysis CSV excluded
   artifacts before operational use.
 - Treat category-factorized Spearman and multiple hypothesis tests as
   exploratory; apply domain review and multiple-testing controls for research.
+- The historical code in the report standardises features on the full dataset
+  before splitting (a minor leak). The maintained classifier fits scaling
+  inside the training pipeline instead.
+- No licence file is included, so the code is all rights reserved by default.
 
 ## Documentation
 
