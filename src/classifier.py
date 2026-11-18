@@ -28,22 +28,30 @@ class CropClassifier:
 
     def train_svm(self, crop_col: str, features: Sequence[str]) -> dict[str, Any]:
         """Train and evaluate a scaled SVM without fitting transforms on test rows."""
-        target = self.data[crop_col]
-        y_binary = np.where(target >= target.mean(), 1, 0)
-        class_counts = np.bincount(y_binary)
+        target = self.data[crop_col].to_numpy(dtype=float)
+        # Provisional full-data labels only balance the split (stratify); the
+        # label threshold itself is the training-split mean, applied to test.
+        split_strata = np.where(target >= target.mean(), 1, 0)
+        class_counts = np.bincount(split_strata)
         if len(class_counts) < 2 or class_counts.min() < 2:
             logging.warning("At least two observations per class are required for %s.", crop_col)
             return {}
 
         X = pd.get_dummies(self.data[list(features)], drop_first=False, dtype=float)
-        X_train, X_test, y_train, y_test = train_test_split(
+        X_train, X_test, target_train, target_test = train_test_split(
             X,
-            y_binary,
+            target,
             test_size=TEST_SIZE,
             random_state=RANDOM_STATE,
-            stratify=y_binary,
+            stratify=split_strata,
         )
-        train_class_counts = np.bincount(y_train)
+        threshold = target_train.mean()
+        y_train = np.where(target_train >= threshold, 1, 0)
+        y_test = np.where(target_test >= threshold, 1, 0)
+        if len(np.unique(y_test)) < 2:
+            logging.warning("Test split has a single class for %s; AUC is undefined.", crop_col)
+            return {}
+        train_class_counts = np.bincount(y_train, minlength=2)
         cv_folds = min(5, int(train_class_counts.min()))
         if cv_folds < 2:
             logging.warning("Training split is too small for cross-validation of %s.", crop_col)

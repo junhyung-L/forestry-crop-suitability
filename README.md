@@ -11,8 +11,10 @@ climate, and production data sit in separate public sources. Which conditions
 go with above-average production for each crop, and which regions match them?
 
 **Result.** Test AUC for above-mean production: 0.94 for chestnut, 0.91 for
-yam, and 0.84 for blackberry (chance 0.5). No single model fit every crop:
+yam, and 0.84 for blackberry (no majority-class baseline was run). No single model fit every crop:
 logistic regression for chestnut, SVM for yam, random forest for blackberry.
+
+**Role.** Team entry; I wrote the analysis code and documentation in this repository.
 
 **Scope.** Test sets held about 2 to 5 positive cases, so model differences are
 within AUC noise. The CLI (`python run_pipeline.py`) re-implements only the
@@ -23,7 +25,7 @@ figures in `images/`), whose CSV is not included.
 
 **Recognition.** Grand Prize (Korea Forest Service Commissioner Award, first
 place), 2024 Forestry Statistics Smart Use Competition, Korea Forest Service
-and Korea Forestry Promotion Institute (13 Dec 2024). Team entry.
+and Korea Forestry Promotion Institute (13 Dec 2024).
 
 ## Results
 
@@ -69,7 +71,7 @@ flowchart LR
 | Loading | `DataLoader` maps the original Korean headers or accepts English names such as `chestnut_kg`, `avg_temp`, `humidity`, and `precipitation`. It fills missing climate values with column means and derives `temp_diff` from maximum and minimum temperature. |
 | Statistical checks | `StatAnalyzer`: soil-category association with quantile-binned positive yield, one-way ANOVA, Spearman correlations. |
 | Regression | `CropPredictor` keeps positive production, one-hot encodes features, and fits a median-imputation + random-forest pipeline. Reports 80/20 holdout R²/MSE and shuffled CV R² (seed 42). |
-| Suitability classification | `CropClassifier` labels production at or above the full-input mean as suitable, then runs imputation, scaling, and a linear SVM in one pipeline with a stratified 80/20 split and stratified CV (seed 42). |
+| Suitability classification | `CropClassifier` labels production at or above the training-split mean (the same cut-off is applied to the test split) as suitable, then runs imputation, scaling, and a linear SVM in one pipeline with a stratified 80/20 split and stratified CV (seed 42). |
 | Outputs | `run_pipeline.py` saves chi-square, ANOVA, and Spearman tables and a JSON model summary under `results/`. |
 
 ## Figures
@@ -80,23 +82,13 @@ flowchart LR
 recommendation, plus sales, price, and regional production inputs for the
 companion information views.*
 
-![Presentation market and regional map views](images/report/presentation_recommendation_maps.png)
-
-*Figure 2. Presentation page 23: market-trend and regional-production map
-examples.*
-
-![Concept dashboard and recommendation flow](images/dashboard_collage.png)
-
-*Figure 3. Concept collage of the map, recommendation, and market-information
-interface.*
-
 ![Correlation heatmap for filtered forestry data](images/correlation_heatmap.png)
 
-*Figure 4. Correlations among climate variables and crop-production columns.*
+*Figure 2. Correlations among climate variables and crop-production columns.*
 
 ![Chestnut ROC curve](images/roc_chestnut.png)
 
-*Figure 5. Chestnut ROC curve, AUC 0.94. It rises in steps of 0.2, so the test
+*Figure 3. Chestnut ROC curve, AUC 0.94. It rises in steps of 0.2, so the test
 set held about five positive cases.*
 
 ## How to run
@@ -147,3 +139,7 @@ data/                  # Source notes; raw analysis CSV not included
 
 - [Case study](PORTFOLIO.md)
 - [Architecture](docs/ARCHITECTURE.md)
+
+## License
+
+No open-source license: the code and documents are public for review; reuse requires permission.

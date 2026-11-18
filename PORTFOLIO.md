@@ -11,7 +11,7 @@ and existing suitability datasets are hard to read without coding. The project
 combines those sources, including GIS soil shapefiles, screens variables with
 statistical tests, compares three classifiers per crop, and turns the result
 into a map concept. Test AUC for above-mean production: 0.94 (chestnut), 0.91
-(yam), 0.84 (blackberry), against 0.5 for chance.
+(yam), 0.84 (blackberry) (no majority-class baseline was run).
 
 Grand Prize (Korea Forest Service Commissioner Award, first place), 2024
 Forestry Statistics Smart Use Competition, Korea Forest Service and Korea
@@ -74,7 +74,8 @@ Cost: a sanity check, not validation.
 | Yam | SVM | 0.91 | 2 |
 | Blackberry | Random forest | 0.84 | 4 |
 
-The comparison point is the chance diagonal (AUC 0.5) on each ROC figure.
+No majority-class baseline was run; the only reference is the chance diagonal
+(AUC 0.5) on each ROC figure.
 The repository CLI re-implements only the screening statistics (chi-square,
 ANOVA, Spearman), a random-forest production regression, and a linear-SVM
 classifier; the per-crop model choices and AUCs above come from the
