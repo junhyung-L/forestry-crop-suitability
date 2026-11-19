@@ -11,7 +11,7 @@ climate, and production data sit in separate public sources. Which conditions
 go with above-average production for each crop, and which regions match them?
 
 **Result.** Test AUC for above-mean production: 0.94 for chestnut, 0.91 for
-yam, and 0.84 for blackberry (no majority-class baseline was run). No single model fit every crop:
+yam, and 0.84 for blackberry (chance level 0.5; no majority-class baseline was run). No single model fit every crop:
 logistic regression for chestnut, SVM for yam, random forest for blackberry.
 
 **Role.** Team entry; I wrote the analysis code and documentation in this repository.
